@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Lead Bank - Online Banking </title>
+    <style>
+        <img src="images.png" class="header" alt="profile-section" >
+    .center-header {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%; /* optional */
+    }
+  </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .Lead-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .Lead-logo h1 {
+            color: #005cb9;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: #005cb9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .login-btn:hover {
+            background: #004494;
+        }
+
+        .dashboard {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #005cb9;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 {
+            font-size: 1.8em;
+        }
+
+        .timestamp {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #007bff;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .balance-section {
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .balance-amount {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .action-buttons {
+            padding: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 15px 30px;
+            background: #005cb9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #004494;
+            transform: translateY(-2px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-desc {
+            font-weight: bold;
+        }
+
+        .transaction-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .transaction-amount {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .transaction-amount.negative {
+            color: #dc3545;
+        }
+
+        .account-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .detail-value {
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+        .alert {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .account-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container">
+            <div class="Lead-logo">
+                <h1>Lead</h1>
+                <p>Online Banking</p>
+            </div>
+            <form class="login-form" id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+            <div id="loginError" style="color: red; margin-top: 15px; text-align: center; display: none;">
+                Invalid username or password. Please try again.
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="header">
+                <h2>Welcome to Lead Online Banking</h2>
+                <div class="timestamp" id="timestamp"></div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="profile-section">
+                <div class="profile-pic">IBB</div>
+                <img src="images.png" width="100px">
+                <h3>Irene Bosoma Boateng</h3>
+                <p>Premium Banking Customer</p>
+            </div>
+
+            <div class="balance-section">
+                <h3>Account Balance</h3>
+                <div class="balance-amount">$98,560,456.01</div>
+                <p>Available Balance</p>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn" onclick="openTransferModal()">Transfer Funds</button>
+                <button class="action-btn" onclick="openTransactionModal()">Transactions</button>
+                <button class="action-btn" onclick="openAccountDetailsModal()">Account Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div id="transferModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('transferModal')">&times;</span>
+            <h2>Transfer Funds</h2>
+            <form id="transferForm">
+                <div class="form-group">
+                    <label for="recipientName">Recipient Name:</label>
+                    <input type="text" id="recipientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" rows="3"></textarea>
+                </div>
+                <button type="submit" class="action-btn" style="width: 100%; margin-top: 20px;">Send Transfer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('transactionModal')">&times;</span>
+            <h2>Recent Transactions</h2>
+            <div id="transactionList">
+                <div class="transaction-item">
+                    <div>
+                        <div class="transaction-desc">Online Purchase - Amazon</div>
+                        <div class="transaction-date">Jan 20, 2025</div>
+                    </div>
+                    <div class="transaction-amount negative">-$247.89</div>
+                </div>
+                <div>
+                    <div class="transaction-item">
+                        <div>
+                            <div class="transaction-desc ne">ATM Withdrawal</div>
+                            <div class="transaction-date">Dec 20, 2024</div>
+                        </div>
+                        <div class="transaction-amount negative">-$7,450.00</div>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <div class="transaction-desc">Online Purchase</div>
+                        <div class="transaction-date">Dec 15, 2024</div>
+                    </div>
+                    <div class="transaction-amount negative">-$8,500.00</div>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <div class="transaction-desc negative">ATM Withdrawal</div>
+                        <div class="transaction-date">Nov 12, 2024</div>
+                    </div>
+                    <div class="transaction-amount negative">-$200.00</div>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <div class="transaction-desc">Wire Transfer</div>
+                        <div class="transaction-date">Oct 10, 2024</div>
+                    </div>
+                    <div class="transaction-amount">+$15,750.00</div>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <div class="transaction-desc">Utility Payment</div>
+                        <div class="transaction-date">Sept 8, 2024</div>
+                    </div>
+                    <div class="transaction-amount negative">-$156.42</div>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <div class="transaction-desc">Transfer from Savings</div>
+                        <div class="transaction-date">Aug 5, 2024</div>
+                    </div>
+                    <div class="transaction-amount">+$5,000.00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Details Modal -->
+    <div id="accountDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('accountDetailsModal')">&times;</span>
+            <h2>Account Details</h2>
+            <div class="account-details">
+                <div class="detail-item">
+                    <div class="detail-label">Account Name</div>
+                    <div class="detail-value">Irene Bosoma Boateng</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Account Number</div>
+                    <div class="detail-value">214497997748</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Routing Number</div>
+                    <div class="detail-value">101019644</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Address</div>
+                    <div class="detail-value">1801 Main St.</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Country</div>
+                    <div class="detail-value">US</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">State</div>
+                    <div class="detail-value">MO</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">City</div>
+                    <div class="detail-value">Kansas City</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Postal Code</div>
+                    <div class="detail-value">64108</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Alert Modal -->
+    <div id="transferAlertModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('transferAlertModal')">&times;</span>
+            <h2>Account Activation Required</h2>
+            <div class="alert">
+                Your account needs to be activated before making transfers. Contact your Bank on bullionvvault@gmail.com thank you.
+            </div>
+            <button class="action-btn" onclick="closeModal('transferAlertModal')" style="width: 100%; margin-top: 15px;">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('timestamp').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'irene' && password === 'irene123') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                updateTimestamp();
+                setInterval(updateTimestamp, 1000);
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
+
+        // Logout functionality
+        function logout() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Modal functions
+        function openTransferModal() {
+            document.getElementById('transferModal').style.display = 'block';
+        }
+
+        function openTransactionModal() {
+            document.getElementById('transactionModal').style.display = 'block';
+        }
+
+        function openAccountDetailsModal() {
+            document.getElementById('accountDetailsModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Transfer form submission
+        document.getElementById('transferForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            closeModal('transferModal');
+            document.getElementById('transferAlertModal').style.display = 'block';
+            
+            // Reset form
+            document.getElementById('transferForm').reset();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = ['transferModal', 'transactionModal', 'accountDetailsModal', 'transferAlertModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    closeModal(modalId);
+                }
+            });
+        }
+
+        // Initialize timestamp on page load
+        updateTimestamp();
+    </script>
+</body>
+</html>
